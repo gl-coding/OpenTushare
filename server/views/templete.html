@@ -20,6 +20,8 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
     <script type="text/javascript">
+        //let global_url = "http://127.0.0.1:8008";
+        let global_url = "https://stock.ideapool.club/update";
         var dom = document.getElementById("container");
         var myChart = echarts.init(dom);
         //myChart.showLoading();
@@ -87,7 +89,7 @@
             //同步方法
             $.ajax({
                 type: "post",
-                url: "http://127.0.0.1:8888/update",
+                url: "https://stock.ideapool.club/update",
                 data: "message=" + word,
                 async: false,
                 success: function(data) {
