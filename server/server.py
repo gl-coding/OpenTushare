@@ -90,5 +90,5 @@ application = tornado.web.Application(
 
 if __name__ == "__main__":
     #内部socket运行起来
-    application.listen(8888)                            #设置端口
+    application.listen(8008)                            #设置端口
     tornado.ioloop.IOLoop.instance().start()
