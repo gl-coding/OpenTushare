@@ -31,7 +31,11 @@ def read_data(sid):
     path = "../data_id/log." + sid
     res_data = []
     with open(path) as f:
+        counter = 0
         for line in f:
+            counter += 1
+            if counter == 1:
+                continue
             line = line.strip()
             res_item = []
             split_res = line.split("\t")
@@ -44,7 +48,7 @@ def read_data(sid):
             res_item.extend(data_item)
             res_data.append(res_item)
 
-    res_data.reverse()
+    #res_data.reverse()
     return res_data
 
 def load_category_info():
