@@ -37,7 +37,8 @@ def read_data(sid):
             split_res = line.split("\t")
 
             date_str = split_res[0].replace("-", "/")
-            data_item = [float(item) for item in split_res[1:5]]
+            data_list = [split_res[0], split_res[2], split_res[1], split_res[3]]
+            data_item = [float(item) for item in data_list]
 
             res_item.append(date_str)
             res_item.extend(data_item)
@@ -45,6 +46,24 @@ def read_data(sid):
 
     res_data.reverse()
     return res_data
+
+def load_category_info():
+    path = "../data/log.basics"
+    res_data = {}
+    with open(path) as f:
+        counter = 0
+        for line in f:
+            counter += 1
+            if counter == 1:
+                continue
+            line      = line.strip()
+            split_res = line.split("\t")
+            code      = split_res[0]
+            detail    = "\t".join(split_res[1:3])
+            res_data[code] = detail
+    return res_data
+
+stock_category_dict = load_category_info()
 
 #return echart init page, receive arg 
 class initPage(tornado.web.RequestHandler):
@@ -71,7 +90,8 @@ class updatePage(tornado.web.RequestHandler):
         code = read_code()
         print "post:" + code
         res_list = read_data(code)
-        res_json = json.dumps({"res":res_list})
+        category = stock_category_dict(code)
+        res_json = json.dumps({"res":res_list, "cate":category})
 
         self.write(res_json)
 

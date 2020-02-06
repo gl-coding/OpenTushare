@@ -1,5 +1,6 @@
 #encoding=utf8
 import os
+import time
 import x_utils as ut
 
 import sys
@@ -75,6 +76,33 @@ def merge_sid_info():
         conc = "_".join(conc)
         print >> fout, "\t".join([i, name, area, clas, conc])
 
+def update_daily(fin_name, date_str=""):
+    if date_str == "":
+        date_str = time.strftime("%Y-%m-%d", time.localtime())
+
+    name = "data_daily/stock_detail." + date_str
+    fout = ut.ropen(name)
+
+    name = "data_daily/stock_detail." + date_str + ".err"
+    ferr = ut.ropen(name)
+
+    with open(fin_name) as f:
+        counter = 0
+        for line in f:
+            counter += 1
+            if counter == 1:
+                continue
+            line = line.strip()
+            split_res = line.split("\t")
+            code = split_res[0]
+            print code
+            try:
+                res = ut.get_stock_info(code, date_str)
+                res = code + "\t" + res
+                print >> fout, res
+            except:
+                print >> ferr, code
+
 if __name__ == "__main__":
     arg = sys.argv[1]
     if arg == "category":
@@ -85,5 +113,17 @@ if __name__ == "__main__":
         write_all_data()
     elif arg == "merge":
         merge_sid_info()
+    elif arg == "basic":
+        ut.get_stock_basics()
+    elif arg == "update":
+        date_str = "2020-02-03"
+        date_str = "2020-02-04"
+        date_str = "2020-02-05"
+        date_str = "2020-02-06"
+        date_str = "2020-02-03"
+        #update_daily("data/log.basics", date_str)
+        code = "603290"
+        res = ut.get_stock_info(code, date_str)
+        print res
     else:
         print "arg error"

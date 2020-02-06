@@ -84,6 +84,7 @@
 
         function option_set(dayCount) {
             let data_res = [];
+            let title = "";
             var word = "aaaaaaaa";
 
             //同步方法
@@ -95,6 +96,7 @@
                 success: function(data) {
                     let json_obj = JSON.parse(data);
                     data_res = json_obj.res
+                    title    = json_obj.cate
                 }
             });
 
@@ -102,7 +104,7 @@
 
             option = {
                 title: {
-                    text: '上证指数',
+                    text: title,
                     left: 0
                 },
                 tooltip: {
