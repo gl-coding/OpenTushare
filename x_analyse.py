@@ -89,6 +89,7 @@ def update_daily(fin_name, date_str=""):
 
     with open(fin_name) as f:
         counter = 0
+        counter_simple = 0
         for line in f:
             counter += 1
             if counter == 1:
@@ -100,9 +101,13 @@ def update_daily(fin_name, date_str=""):
             try:
                 res = ut.get_stock_info(code, date_str)
                 res = code + "\t" + res
+                if len(res.split("\t")) == 2:
+                    counter_simple += 1
                 print >> fout, res
             except:
                 print >> ferr, code
+            if counter_simple > 500:
+                return
 
 def sort_stock(filename):
     with open(filename) as f:
@@ -117,15 +122,18 @@ def merge_daily_detail_check(date_str=""):
     if date_str == "":
         date_str = time.strftime("%Y-%m-%d", time.localtime())
     inc_dir = "./data_daily/stock_detail."
-    src_file = inc_dir + code
+    src_file = inc_dir + date_str
     with open(src_file) as f:
+        counter = 0
         for line in f:
-            
+            counter += 1
+    if counter < 1000:
+        return False
+    return True
 
 def merge_daily_detail(date_str=""):
     inc_dir = "./data_daily/stock_detail."
-    src_dir = "./data_base/log."
-    tar_dir = "./data_merge/log."
+    src_dir = "./data_merge/log."
 
     if date_str == "":
         date_str = time.strftime("%Y-%m-%d", time.localtime())
@@ -137,11 +145,11 @@ def merge_daily_detail(date_str=""):
             split_res = line.split("\t")
             code = split_res[0]
             src_file = src_dir + code
-            tar_file = tar_dir + code
-            print src_file
+            #tar_file = tar_dir + code
+            #print src_file
             if os.path.exists(src_file):
-                shutil.copyfile(src_file, tar_file)
-                fout = ut.ropen(tar_file, False)
+                #shutil.copyfile(src_file, tar_file)
+                fout = ut.ropen(src_file, False)
                 print >> fout, line
 
 if __name__ == "__main__":
@@ -169,8 +177,15 @@ if __name__ == "__main__":
         date_str = "2020-02-06"
         filename = "data_daily/stock_detail." + date_str
     elif arg == "append":
-        #merge_daily_detail("2020-02-06")
-        merge_daily_detail()
+        date_str = "2020-02-02"
+        date_str = "2020-02-06"
+        #update daily data
+        update_daily("data/log.basics", date_str)
+        #check 
+        res = merge_daily_detail_check(date_str)
+        if res:
+            #merge data
+            merge_daily_detail()
     else:
         print "arg error"
 
