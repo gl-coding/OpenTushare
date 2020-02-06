@@ -7,21 +7,28 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-def ropen(filename):
-    if os.path.exists(filename):
+def ropen(filename, rm=True):
+    if os.path.exists(filename) and rm:
         os.remove(filename)
     return open(filename, "a+")
 
 def gen_stock_dic(df, names, filename, idx=False):
     fin = ropen(filename)
-    print >> fin, "\t".join(names)
+    #print >> fin, "\t".join(names)
+    res = []
     for index, row in df.iterrows():
         in_list = []
         if idx != False:
             in_list.append(index)
         for name in names:
             in_list.append(str(row[name]).decode("utf8"))
-        print >> fin, "\t".join(in_list)
+        #print >> fin, "\t".join(in_list)
+        tmp_line =  "\t".join(in_list)
+        res.append(tmp_line)
+    print >> fin, "\t".join(names)
+    res.reverse()
+    for item in res:
+        print >> fin, item
 
 def gen_stock_line(df, names):
     res = []
