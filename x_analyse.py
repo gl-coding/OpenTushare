@@ -2,6 +2,7 @@
 import os
 import time
 import x_utils as ut
+import shutil
 
 import sys
 reload(sys)
@@ -103,6 +104,46 @@ def update_daily(fin_name, date_str=""):
             except:
                 print >> ferr, code
 
+def sort_stock(filename):
+    with open(filename) as f:
+        for line in f:
+            line = line.strip()
+            split_res = line.split("\t")
+            if len(split_res) <  4:
+                continue
+            print line
+
+def merge_daily_detail_check(date_str=""):
+    if date_str == "":
+        date_str = time.strftime("%Y-%m-%d", time.localtime())
+    inc_dir = "./data_daily/stock_detail."
+    src_file = inc_dir + code
+    with open(src_file) as f:
+        for line in f:
+            
+
+def merge_daily_detail(date_str=""):
+    inc_dir = "./data_daily/stock_detail."
+    src_dir = "./data_base/log."
+    tar_dir = "./data_merge/log."
+
+    if date_str == "":
+        date_str = time.strftime("%Y-%m-%d", time.localtime())
+
+    fin = inc_dir + date_str
+    with open(fin) as f:
+        for line in f:
+            line = line.strip()
+            split_res = line.split("\t")
+            code = split_res[0]
+            src_file = src_dir + code
+            tar_file = tar_dir + code
+            print src_file
+            if os.path.exists(src_file):
+                shutil.copyfile(src_file, tar_file)
+                fout = ut.ropen(tar_file, False)
+                print >> fout, line
+
 if __name__ == "__main__":
     arg = sys.argv[1]
     if arg == "category":
@@ -115,15 +156,22 @@ if __name__ == "__main__":
         merge_sid_info()
     elif arg == "basic":
         ut.get_stock_basics()
-    elif arg == "update":
-        date_str = "2020-02-03"
-        date_str = "2020-02-04"
-        date_str = "2020-02-05"
-        date_str = "2020-02-06"
-        date_str = "2020-02-03"
+    elif arg == "update_daily":
+        #date_str = "2020-02-06"
         #update_daily("data/log.basics", date_str)
+        update_daily("data/log.basics")
+    elif arg == "single":
+        date_str = "2020-02-07"
         code = "603290"
         res = ut.get_stock_info(code, date_str)
         print res
+    elif arg == "sort":
+        date_str = "2020-02-06"
+        filename = "data_daily/stock_detail." + date_str
+    elif arg == "append":
+        #merge_daily_detail("2020-02-06")
+        merge_daily_detail()
     else:
         print "arg error"
+
+
