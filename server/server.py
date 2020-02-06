@@ -37,7 +37,7 @@ def read_data(sid):
             split_res = line.split("\t")
 
             date_str = split_res[0].replace("-", "/")
-            data_list = [split_res[0], split_res[2], split_res[1], split_res[3]]
+            data_list = [split_res[1], split_res[3], split_res[2], split_res[4]]
             data_item = [float(item) for item in data_list]
 
             res_item.append(date_str)
@@ -59,7 +59,7 @@ def load_category_info():
             line      = line.strip()
             split_res = line.split("\t")
             code      = split_res[0]
-            detail    = "\t".join(split_res[1:3])
+            detail    = "\t".join(split_res[0:4])
             res_data[code] = detail
     return res_data
 
@@ -90,7 +90,7 @@ class updatePage(tornado.web.RequestHandler):
         code = read_code()
         print "post:" + code
         res_list = read_data(code)
-        category = stock_category_dict(code)
+        category = stock_category_dict.get(code, "")
         res_json = json.dumps({"res":res_list, "cate":category})
 
         self.write(res_json)
