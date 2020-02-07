@@ -142,14 +142,17 @@ def merge_daily_detail(date_str=""):
     with open(fin) as f:
         for line in f:
             line = line.strip()
+            print line
             split_res = line.split("\t")
             code = split_res[0]
             src_file = src_dir + code
             #tar_file = tar_dir + code
-            #print src_file
+            print src_file
             if os.path.exists(src_file):
                 #shutil.copyfile(src_file, tar_file)
                 fout = ut.ropen(src_file, False)
+                #print line
+                line = "\t".join(split_res[1:])
                 print >> fout, line
 
 if __name__ == "__main__":
@@ -177,12 +180,15 @@ if __name__ == "__main__":
         date_str = "2020-02-06"
         filename = "data_daily/stock_detail." + date_str
     elif arg == "append":
-        date_str = "2020-02-02"
-        date_str = "2020-02-06"
+        date_str = "2020-02-07"
+        if date_str == "":
+            date_str = time.strftime("%Y-%m-%d", time.localtime())
         #update daily data
-        update_daily("data/log.basics", date_str)
+        basic = "data/log.basics." + date_str
+        update_daily("data/log.basics." + date_str, date_str)
         #check 
         res = merge_daily_detail_check(date_str)
+        #print res
         if res:
             #merge data
             merge_daily_detail()
