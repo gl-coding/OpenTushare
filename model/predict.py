@@ -1,11 +1,7 @@
-import os
 import sys
-import numpy as np
 
-from sklearn.tree import DecisionTreeClassifier 
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
-from sklearn import svm
 
 def load_data():
     data = []
@@ -24,10 +20,48 @@ def load_data():
     return data, tar
 
 if __name__ == "__main__":
+    opt = sys.argv[1]
+
     data, tar = load_data()
-    clf = DecisionTreeClassifier()
-    #print cross_val_score(clf, data, tar, cv=10)
-    X_train, X_test, y_train, y_test = train_test_split(data, tar, test_size=0.4, random_state=0)
-    clf = svm.SVC(kernel='linear', C=1)
-    clf.fit(X_train, y_train)
-    print clf.score(X_test, y_test)
+    print "load data ......"
+    x_train, x_test, y_train, y_test = train_test_split(data, tar, test_size=0.4, random_state=0)
+
+    clf = None
+
+    if opt == "dest":
+        from sklearn.tree import DecisionTreeClassifier 
+        clf = DecisionTreeClassifier()
+    elif opt == "svm":
+        from sklearn import svm
+        clf = svm.SVC(kernel='linear', C=1)
+    elif opt == "knn":
+        from sklearn.neighbors import KNeighborsClassifier
+        clf = KNeighborsClassifier()
+    elif opt == "lr":
+        from sklearn.linear_model import LogisticRegression
+        clf = LogisticRegression(penalty='l2')
+    elif opt == "rf":
+        from sklearn.ensemble import RandomForestClassifier
+        clf = RandomForestClassifier(n_estimators=8)
+    elif opt == "gbdt":
+        from sklearn.ensemble import GradientBoostingClassifier
+        clf = GradientBoostingClassifier(n_estimators=200)
+    elif opt == "ada":
+        from sklearn.ensemble import  AdaBoostClassifier
+        clf = AdaBoostClassifier()
+    elif opt == "gnb":
+        from sklearn.naive_bayes import GaussianNB
+        clf = GaussianNB()
+    elif opt == "ld":
+        from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+        clf = LinearDiscriminantAnalysis()
+    elif opt == "qd":
+        from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+        clf = QuadraticDiscriminantAnalysis()
+    elif opt == "nb":
+        from sklearn.naive_bayes import MultinomialNB
+        clf = MultinomialNB(alpha=0.01)
+
+    print "fit data ......"
+    clf.fit(x_train, y_train)
+    print clf.score(x_test, y_test)
