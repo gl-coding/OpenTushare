@@ -180,18 +180,22 @@ if __name__ == "__main__":
         date_str = "2020-02-06"
         filename = "data_daily/stock_detail." + date_str
     elif arg == "append":
-        date_str = "2020-02-07"
+        date_str = "2020-02-08"
+        ut.get_stock_basics()
         if date_str == "":
             date_str = time.strftime("%Y-%m-%d", time.localtime())
         #update daily data
         basic = "data/log.basics." + date_str
         update_daily("data/log.basics." + date_str, date_str)
-        #check 
+        #check if the date is rest day
         res = merge_daily_detail_check(date_str)
         #print res
         if res:
             #merge data
-            merge_daily_detail()
+            print "check success"
+            merge_daily_detail(date_str)
+        else:
+            print "check fail, today is a stock rest day"
     else:
         print "arg error"
 
