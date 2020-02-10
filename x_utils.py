@@ -88,8 +88,9 @@ def get_daily_info(sid):
     #print args
     gen_stock_dic(df, args, "data_id/log."+sid, idx=True)
 
-def get_stock_basics():
-    date_str = time.strftime("%Y_%m_%d", time.localtime())
+def get_stock_basics(date_str=""):
+    if date_str == "":
+        date_str = time.strftime("%Y-%m-%d", time.localtime())
     df = ts.get_stock_basics()
     args = df.columns.values.tolist()
     gen_stock_dic(df, args, "data/log.basics." + date_str, True)
