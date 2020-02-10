@@ -1,6 +1,4 @@
 import sys
-
-from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
 
 def load_data():
@@ -19,12 +17,10 @@ def load_data():
                 break
     return data, tar
 
-if __name__ == "__main__":
-    opt = sys.argv[1]
-
+def ml_stragety(opt):
     data, tar = load_data()
     print "load data ......"
-    x_train, x_test, y_train, y_test = train_test_split(data, tar, test_size=0.4, random_state=0)
+    x_train, x_test, y_train, y_test = train_test_split(data, tar, test_size=0.2, random_state=0)
 
     clf = None
 
@@ -65,3 +61,6 @@ if __name__ == "__main__":
     print "fit data ......"
     clf.fit(x_train, y_train)
     print clf.score(x_test, y_test)
+
+if __name__ == "__main__":
+    opt = sys.argv[1]
