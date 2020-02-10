@@ -180,7 +180,8 @@ if __name__ == "__main__":
         date_str = "2020-02-06"
         filename = "data_daily/stock_detail." + date_str
     elif arg == "append":
-        date_str = "2020-02-08"
+        #date_str = "2020-02-07"
+        date_str = ""
         ut.get_stock_basics()
         if date_str == "":
             date_str = time.strftime("%Y-%m-%d", time.localtime())
