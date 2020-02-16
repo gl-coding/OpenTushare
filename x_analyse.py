@@ -180,13 +180,13 @@ if __name__ == "__main__":
         date_str = "2020-02-06"
         filename = "data_daily/stock_detail." + date_str
     elif arg == "append":
-        #date_str = "2020-02-07"
+        date_str = "2020-02-13"
         date_str = ""
         if len(sys.argv) == 3:
             date_str = sys.argv[2]
         else:
             date_str = ""
-        #ut.get_stock_basics(date_str)
+        ut.get_stock_basics(date_str)
         if date_str == "":
             date_str = time.strftime("%Y-%m-%d", time.localtime())
         #update daily data
