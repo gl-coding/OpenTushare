@@ -28,7 +28,7 @@ def read_code():
 
 #load stock history data
 def read_data(sid):
-    path = "../data_id/log." + sid
+    path = "../data_merge/log." + sid
     res_data = []
     with open(path) as f:
         counter = 0
