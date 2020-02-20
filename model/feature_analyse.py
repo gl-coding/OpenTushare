@@ -50,10 +50,12 @@ def react():
             continue
         #print v[-1]
         score = v[-1][7]
-        data_list.append((code, name, float(score)))
-    result = sorted(data_list, key=lambda x:x[2])
+        price = v[-1][8]
+        date_str = v[-1][0]
+        data_list.append((code, name, date_str, float(score), price))
+    result = sorted(data_list, key=lambda x:x[3])
     for line in result:
-        print line[0], line[1], line[2]
+        print line[2], line[0], line[1], line[3], line[4]
 
 def gen_train_data():
     train = open("train.txt", "a+")
